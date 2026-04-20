@@ -550,11 +550,28 @@ footer {
 }
 
 /* REVEAL ANIMATION */
-.reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .reveal.visible { opacity: 1; transform: none; }
+/* FORM */
+.step { display: none; }
+.step.active { display: block; }
+.question { margin-bottom: 1.25rem; text-align: left; }
+.q-label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--ink); margin-bottom: 0.5rem; }
+.q-sub { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.grid-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; transition: all 0.15s; background: var(--white); text-align: left; }
+.opt:hover { border-color: var(--muted); }
+.opt.selected { border-color: var(--rose); }
+.opt input { accent-color: var(--rose); width: 15px; height: 15px; flex-shrink: 0; }
+.opt-label { font-size: 0.82rem; color: var(--ink); line-height: 1.4; }
+.form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; color: var(--ink); background: var(--white); font-family: inherit; outline: none; transition: border-color 0.15s; margin-bottom: 0.25rem; }
+.form-input:focus { border-color: var(--rose); }
+textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.5; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.step-count { font-size: 0.75rem; color: var(--muted); }
+.btn-back { background: none; border: 1px solid var(--border); color: var(--muted); padding: 8px 18px; font-size: 0.75rem; cursor: pointer; font-family: inherit; border-radius: 4px; transition: all 0.2s; }
+.btn-back:hover { border-color: var(--muted); color: var(--ink); }
 
 /* MOBILE */
 @media (max-width: 900px) {
@@ -942,18 +959,28 @@ footer {
     <h2 class="section-title">Be first.<br><em>Join the waitlist.</em></h2>
     <p class="section-sub">Ntoma is launching soon. Early access members get lifetime pricing locked in and first access to every new feature.</p>
 
-    <div id="form-wrap" style="max-width:500px;margin:0 auto;text-align:left;">
-      <div class="step-indicator" id="dots" style="display:flex;gap:6px;margin-bottom:1.5rem;justify-content:center;"></div>
+    <div id="form-wrap" style="max-width:480px;margin:0 auto;text-align:left;">
+      <div id="dots" style="display:flex;gap:6px;margin-bottom:1.5rem;justify-content:center;"></div>
 
       <div id="step1" class="step active">
-        <div class="question"><span class="q-label">Your email address</span><input type="email" class="signup-input" id="email" placeholder="you@email.com" style="margin-bottom:1rem;"></div>
-        <div class="question"><span class="q-label">Your first name</span><input type="text" class="signup-input" id="uname" placeholder="Your name"></div>
-        <div class="nav-row"><span class="step-count">1 of 5</span><button class="signup-btn" onclick="nextStep(1)">Next →</button></div>
+        <div class="question">
+          <span class="q-label">Your email address</span>
+          <input type="email" class="form-input" id="email" placeholder="you@email.com">
+        </div>
+        <div class="question">
+          <span class="q-label">Your first name</span>
+          <input type="text" class="form-input" id="uname" placeholder="Your name">
+        </div>
+        <div class="nav-row">
+          <span class="step-count">1 of 5</span>
+          <button class="signup-btn" onclick="nextStep(1)">Next &#8594;</button>
+        </div>
       </div>
 
       <div id="step2" class="step">
-        <div class="question"><span class="q-label">Which best describes you?</span>
-          <div class="options" style="margin-top:8px;">
+        <div class="question">
+          <span class="q-label">Which best describes you?</span>
+          <div class="options">
             <label class="opt"><input type="radio" name="q2" value="Home sewer / hobbyist"><span class="opt-label">Home sewer / hobbyist</span></label>
             <label class="opt"><input type="radio" name="q2" value="Fashion design student"><span class="opt-label">Fashion design student</span></label>
             <label class="opt"><input type="radio" name="q2" value="Independent designer"><span class="opt-label">Independent designer</span></label>
@@ -962,52 +989,74 @@ footer {
             <label class="opt"><input type="radio" name="q2" value="Just curious"><span class="opt-label">Just curious / other</span></label>
           </div>
         </div>
-        <div class="nav-row"><button class="btn-back" onclick="backStep(2)">← Back</button><span class="step-count">2 of 5</span><button class="signup-btn" onclick="nextStep(2)">Next →</button></div>
+        <div class="nav-row">
+          <button class="btn-back" onclick="backStep(2)">&#8592; Back</button>
+          <span class="step-count">2 of 5</span>
+          <button class="signup-btn" onclick="nextStep(2)">Next &#8594;</button>
+        </div>
       </div>
 
       <div id="step3" class="step">
-        <div class="question"><span class="q-label">Biggest frustration with patterns?</span><span class="q-sub" style="display:block;font-size:12px;color:#7a7165;margin-bottom:8px;">Select all that apply.</span>
-          <div class="options" style="margin-top:8px;">
-            <label class="opt"><input type="checkbox" name="q3" value="Can't find patterns for styles I want"><span class="opt-label">Can't find patterns for the styles I want</span></label>
+        <div class="question">
+          <span class="q-label">Biggest frustration with patterns?</span>
+          <span class="q-sub">Select all that apply.</span>
+          <div class="options">
+            <label class="opt"><input type="checkbox" name="q3" value="Cant find patterns for styles I want"><span class="opt-label">Can&#8217;t find patterns for the styles I want</span></label>
             <label class="opt"><input type="checkbox" name="q3" value="Too expensive"><span class="opt-label">Paying for patterns is too expensive</span></label>
-            <label class="opt"><input type="checkbox" name="q3" value="Standard sizes don't fit"><span class="opt-label">Standard sizes don't fit my body</span></label>
+            <label class="opt"><input type="checkbox" name="q3" value="Standard sizes dont fit"><span class="opt-label">Standard sizes don&#8217;t fit my body</span></label>
             <label class="opt"><input type="checkbox" name="q3" value="Drafting takes too long"><span class="opt-label">Drafting from scratch takes too long</span></label>
             <label class="opt"><input type="checkbox" name="q3" value="Want to recreate clothes I see"><span class="opt-label">Want to recreate clothes I see online</span></label>
           </div>
         </div>
-        <div class="nav-row"><button class="btn-back" onclick="backStep(3)">← Back</button><span class="step-count">3 of 5</span><button class="signup-btn" onclick="nextStep(3)">Next →</button></div>
+        <div class="nav-row">
+          <button class="btn-back" onclick="backStep(3)">&#8592; Back</button>
+          <span class="step-count">3 of 5</span>
+          <button class="signup-btn" onclick="nextStep(3)">Next &#8594;</button>
+        </div>
       </div>
 
       <div id="step4" class="step">
-        <div class="question"><span class="q-label">How much would you pay for Ntoma?</span>
-          <div class="options" style="margin-top:8px;">
-            <label class="opt"><input type="radio" name="q5" value="Free only"><span class="opt-label">Nothing — only if free</span></label>
-            <label class="opt"><input type="radio" name="q5" value="Up to 9 EUR/month"><span class="opt-label">Up to €9/month</span></label>
-            <label class="opt"><input type="radio" name="q5" value="Up to 19 EUR/month"><span class="opt-label">Up to €19/month</span></label>
-            <label class="opt"><input type="radio" name="q5" value="Up to 49 EUR/month"><span class="opt-label">Up to €49/month (professional)</span></label>
+        <div class="question">
+          <span class="q-label">How much would you pay for Ntoma?</span>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q5" value="Free only"><span class="opt-label">Nothing &#8212; only if free</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Up to 9 EUR/month"><span class="opt-label">Up to &#8364;9/month</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Up to 19 EUR/month"><span class="opt-label">Up to &#8364;19/month</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Up to 49 EUR/month"><span class="opt-label">Up to &#8364;49/month (professional)</span></label>
             <label class="opt"><input type="radio" name="q5" value="Lifetime deal preferred"><span class="opt-label">One-time lifetime deal preferred</span></label>
           </div>
         </div>
-        <div class="nav-row"><button class="btn-back" onclick="backStep(4)">← Back</button><span class="step-count">4 of 5</span><button class="signup-btn" onclick="nextStep(4)">Next →</button></div>
+        <div class="nav-row">
+          <button class="btn-back" onclick="backStep(4)">&#8592; Back</button>
+          <span class="step-count">4 of 5</span>
+          <button class="signup-btn" onclick="nextStep(4)">Next &#8594;</button>
+        </div>
       </div>
 
       <div id="step5" class="step">
-        <div class="question"><span class="q-label">Anything specific you'd want Ntoma to do?</span><span class="q-sub" style="display:block;font-size:12px;color:#7a7165;margin-bottom:8px;">Optional — genuinely read by the founder.</span>
-          <textarea class="signup-input" id="q6" placeholder="e.g. I'd love a mobile app version..." rows="3" style="resize:vertical;min-height:70px;line-height:1.5;"></textarea>
+        <div class="question">
+          <span class="q-label">Anything specific you&#8217;d want Ntoma to do?</span>
+          <span class="q-sub">Optional &#8212; genuinely read by the founder.</span>
+          <textarea class="form-input" id="q6" placeholder="e.g. I&#8217;d love a mobile app version..." rows="3"></textarea>
         </div>
-        <div class="question"><span class="q-label">Are you a pattern maker interested in collaborating?</span>
-          <div class="options" style="margin-top:8px;">
-            <label class="opt"><input type="radio" name="q8" value="Yes - interested in collaboration"><span class="opt-label">Yes — I'd love to discuss</span></label>
+        <div class="question">
+          <span class="q-label">Are you a pattern maker interested in collaborating?</span>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q8" value="Yes - interested in collaboration"><span class="opt-label">Yes &#8212; I&#8217;d love to discuss</span></label>
             <label class="opt"><input type="radio" name="q8" value="No - just a user"><span class="opt-label">No, just interested as a user</span></label>
           </div>
         </div>
-        <div class="nav-row"><button class="btn-back" onclick="backStep(5)">← Back</button><span class="step-count">5 of 5</span><button class="signup-btn" id="submitBtn" onclick="submitForm()">Join waitlist →</button></div>
+        <div class="nav-row">
+          <button class="btn-back" onclick="backStep(5)">&#8592; Back</button>
+          <span class="step-count">5 of 5</span>
+          <button class="signup-btn" id="submitBtn" onclick="submitForm()">Join waitlist &#8594;</button>
+        </div>
       </div>
 
-      <div id="success" style="display:none;text-align:center;padding:2rem 1rem;">
-        <div style="width:48px;height:48px;border-radius:50%;background:#fde8eb;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;color:#C8485A;font-size:22px;">✓</div>
-        <div style="font-size:20px;font-weight:500;color:#0f0e0d;margin-bottom:8px;">You're on the list!</div>
-        <div style="font-size:14px;color:#7a7165;line-height:1.6;">Thank you for joining. We'll be in touch soon — and we'll actually read your answers.</div>
+      <div id="success" style="display:none;text-align:center;padding:2.5rem 1rem;">
+        <div style="width:48px;height:48px;border-radius:50%;background:#fde8eb;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;color:#C8485A;font-size:22px;">&#10003;</div>
+        <div style="font-size:1.2rem;font-weight:500;color:#0f0e0d;margin-bottom:0.5rem;">You&#8217;re on the list!</div>
+        <div style="font-size:0.85rem;color:#7a7165;line-height:1.6;">Thank you for joining. We&#8217;ll be in touch soon.</div>
       </div>
     </div>
     <p class="early-note" style="margin-top:1.5rem;">No spam. No credit card. Just early access.</p>
